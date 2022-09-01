@@ -1,3 +1,2 @@
-Command SU is used when you need a superuser for a small number of task
-when changing group ownership we use the command Chgrp
-
+chmod is used to create a new user
+root is used to print username
