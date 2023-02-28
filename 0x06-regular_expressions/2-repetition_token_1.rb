@@ -1,4 +1,3 @@
 #!/usr/bin/env ruby
-## Take one argument and pass it to a regex matching method
-#
-#puts ARGV[0].scan(/hb?tn/).join
+# A regular expression that is matches a given pattern
+puts ARGV[0].scan(/hb?tn/).join
