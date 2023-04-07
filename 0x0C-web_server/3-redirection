@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# Configures a new ubuntu machine by installing
+# Nginx where it should be listening on port 80
+# Serve a page that would return a Hello World string
+#
+sudo apt-get update -y
+sudo apt-get install nginx -y
+
+# Starting nginx service
+sudo service nginx start
+#
+# Allow nginx on firewall
+sudo ufw allow 'Nginx HTTP'
+#
+# Give the user ownership to website files for easy editing
+sudo chown -R "$USER":"$USER" /var/www/html
+sudo chown -R 755 /var/www
+#
+# Creating new index
+echo "Hello World!" | sudo tee /var/www/html/index.html
+#
+# Setting up /redirect_me to a youtube video
+sudo sed -i '24i\       rewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;' /etc/nginx/sites-available/default
+#
+# Restarting nginx
+sudo service nginx restart

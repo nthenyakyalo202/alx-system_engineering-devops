@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# Configures a new ubuntu machine by installing
+# Nginx where it should be listening on port 80
+# Serve a page that would return a Hello World string
+#
+sudo apt-get update -y
+sudo apt-get install nginx -y
+#
+# Starting nginx service
+sudo service nginx start
+#
+# Allowing nginx on firewall
+sudo ufw allow 'Nginx HTTP'
+#
+# Give the user ownership to website files for easy editing
+sudo chown -R "$USER":"$USER" /var/www/html
+sudo chmod -R 755 /var/www
+#
+# Set up a 404 page
+echo "Ceci n'est pas une page" | sudo tee /var/www/html/error_404.html
+sudo sed -i '25i\       error_page 404 /error_404.html;' /etc/nginx/sites-available/default
+#
+# Restarting nginx
+sudo service nginx restart
