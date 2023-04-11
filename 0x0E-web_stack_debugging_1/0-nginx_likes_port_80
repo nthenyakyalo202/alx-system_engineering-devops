@@ -3,6 +3,7 @@
 
 sudo rm /etc/nginx/sites-enabled/default
 
+This make the default configuration file available to Nginx and enables it for use.
 sudo ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/
 
 sudo service nginx restart
