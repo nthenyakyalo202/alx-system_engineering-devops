@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# Get current date
+DATE=$(date +%d-%m-%Y)
+
+# Set MySQL root password
+PASSWORD=$1
+
+# Create backup directory
+mkdir /tmp/mysql_backup
+
+# Dump all databases to backup.sql file
+mysqldump -u root -p$PASSWORD --all-databases > /tmp/mysql_backup/backup.sql
+
+# Compress backup.sql file to a tar.gz archive
+tar -czvf /tmp/mysql_backup/$DATE.tar.gz /tmp/mysql_backup/backup.sql
+
+# Clean up
+rm /tmp/mysql_backup/backup.sql
+rmdir /tmp/mysql_backup
+
