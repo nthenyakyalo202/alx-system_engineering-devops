@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Check that the username argument was provided
+if [ -z "$1" ]; then
+  echo "Error: Please provide a username argument"
+  exit 1
+fi
+
+# Run the whoami command as the specified user
+sudo -u $1 whoami
