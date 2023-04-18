@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+# Install Nginx and add a custom HTTP header containing the server hostname to its HTTP response on web-01 and web-02.
+# Set the name of the custom HTTP header as X-Served-By and its value as the server hostname.
+
+# Update the package list
+sudo apt-get update
+
+# Install Nginx
+sudo apt-get install nginx -y
+
+# Create a backup of the default Nginx configuration file before modifying it.
+# sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default.bak
+
+# Create a simple web page with "Hello World" content in the index.html file.
+echo "Hello World!" | sudo tee /var/www/html/index.html
+
+# Add a redirection for the website to a YouTube video.
+sudo sed -i '/server_name _;/a \        location /redirect_me {\n               return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;\n       }' /etc/nginx/sites-available/default
+
+# Create a custom 404 error page with "Ceci n'est pas une page" content in the custom_404.html file.
+echo "Ceci n'est pas une page" | sudo tee /var/www/html/custom_404.html
+
+# Configure Nginx to use the custom 404 page for non-existing pages.
+sudo sed -i '/server_name _;/a \        error_page 404 /custom_404.html;\n        location = /custom_404.html {\n                internal;\n        }' /etc/nginx/sites-available/default
+
+# Store the hostname of the server running Nginx in a variable called HOSTNAME.
+HOSTNAME=$(hostname)
+
+# Add the configuration for the custom HTTP header containing the server hostname to Nginx's configuration file.
+sudo sed -i "/^http {/a \    add_header X-Served-By $HOSTNAME;" /etc/nginx/nginx.conf
+
+# Restart the Nginx service to apply the updated configuration.
+sudo service nginx restart
